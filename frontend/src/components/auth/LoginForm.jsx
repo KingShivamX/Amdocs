@@ -55,6 +55,30 @@ const LoginForm = () => {
   if (showResetPassword) {
     return (
       <div className="mt-8 space-y-6">
+        <div className="mb-6">
+          <button
+            type="button"
+            onClick={() => setShowResetPassword(false)}
+            className="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-500 transition-colors duration-200"
+          >
+            <svg 
+              className="mr-2 h-4 w-4" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24" 
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth="2" 
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            Back to login
+          </button>
+        </div>
+
         <div className="rounded-md shadow-sm space-y-4">
           <div>
             <label htmlFor="reset-email" className="block text-sm font-medium text-gray-700 mb-1">Email address</label>
@@ -69,16 +93,6 @@ const LoginForm = () => {
               onChange={(e) => setResetEmail(e.target.value)}
             />
           </div>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <button
-            type="button"
-            onClick={() => setShowResetPassword(false)}
-            className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-          >
-            Back to login
-          </button>
         </div>
 
         <div>
