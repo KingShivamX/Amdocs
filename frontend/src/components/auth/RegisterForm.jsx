@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../common/LoadingSpinner';
 import { authAPI } from '../../services/api';
 
 const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [pageReady, setPageReady] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -13,6 +14,10 @@ const RegisterForm = () => {
     password: '',
     confirmPassword: ''
   });
+
+  useEffect(() => {
+    setPageReady(true);
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -42,6 +47,14 @@ const RegisterForm = () => {
       setIsLoading(false);
     }
   };
+
+  if (!pageReady) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="large" />
+      </div>
+    );
+  }
 
   return (
     <form className="mt-8 space-y-6" onSubmit={handleRegister}>
