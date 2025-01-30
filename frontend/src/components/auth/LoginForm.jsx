@@ -8,6 +8,7 @@ const LoginForm = () => {
   const [pageReady, setPageReady] = useState(false);
   const [error, setError] = useState('');
   const [showResetPassword, setShowResetPassword] = useState(false);
+  const [showForgotPasswordHint, setShowForgotPasswordHint] = useState(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
@@ -25,6 +26,8 @@ const LoginForm = () => {
       ...prev,
       [name]: value
     }));
+    // Reset the hint when user starts typing again
+    setShowForgotPasswordHint(false);
   };
 
   const handleLogin = async (e) => {
@@ -37,6 +40,8 @@ const LoginForm = () => {
       navigate('/');
     } catch (error) {
       setError(error.response?.data?.error || 'Login failed');
+      // Show the forgot password hint when login fails
+      setShowForgotPasswordHint(true);
     } finally {
       setIsLoading(false);
     }
@@ -159,30 +164,6 @@ const LoginForm = () => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <input
-            id="remember-me"
-            name="remember-me"
-            type="checkbox"
-            className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-          />
-          <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-            Remember me
-          </label>
-        </div>
-
-        <div className="text-sm">
-          <button
-            type="button"
-            onClick={() => setShowResetPassword(true)}
-            className="font-medium text-indigo-600 hover:text-indigo-500"
-          >
-            Forgot password?
-          </button>
-        </div>
-      </div>
-
       <div>
         <button
           type="submit"
@@ -192,6 +173,50 @@ const LoginForm = () => {
           {isLoading ? <LoadingSpinner size="small" /> : 'Sign in'}
         </button>
       </div>
+
+      <div className="flex justify-center mt-4">
+        <button
+          type="button"
+          onClick={() => setShowResetPassword(true)}
+          className={`
+            text-sm font-medium text-indigo-600 hover:text-indigo-500 
+            transition-all duration-500 relative
+            ${showForgotPasswordHint ? `
+              after:content-[''] after:absolute after:-bottom-1 after:left-0 
+              after:w-full after:h-0.5 after:bg-indigo-600
+              after:transition-transform after:duration-300
+              after:scale-x-100 after:origin-center
+              shadow-sm -translate-y-0.5
+            ` : `
+              after:content-[''] after:absolute after:-bottom-1 after:left-0 
+              after:w-full after:h-0.5 after:bg-indigo-600
+              after:transition-transform after:duration-300
+              after:scale-x-0
+            `}
+          `}
+        >
+          <span className={`inline-flex items-center gap-1 ${showForgotPasswordHint ? 'text-indigo-700' : ''}`}>
+            {showForgotPasswordHint && (
+              <svg 
+                className="w-4 h-4 animate-bounce" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth="2" 
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                />
+              </svg>
+            )}
+            Forgot password?
+          </span>
+        </button>
+      </div>
+
     </form>
   );
 };
