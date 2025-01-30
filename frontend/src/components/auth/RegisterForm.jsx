@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../common/LoadingSpinner';
+import { authAPI } from '../../services/api';
 
 const RegisterForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    fullName: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -21,18 +25,19 @@ const RegisterForm = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      // TODO: Add proper error handling
-      console.error('Passwords do not match');
+      setError('Passwords do not match');
       return;
     }
 
     setIsLoading(true);
+    setError('');
     try {
-      // TODO: Implement registration logic
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated API call
-      console.log('Register:', formData);
+      const { confirmPassword, ...registerData } = formData;
+      const response = await authAPI.register(registerData);
+      localStorage.setItem('token', response.data.token);
+      navigate('/');
     } catch (error) {
-      console.error('Registration error:', error);
+      setError(error.response?.data?.error || 'Registration failed');
     } finally {
       setIsLoading(false);
     }
@@ -40,19 +45,24 @@ const RegisterForm = () => {
 
   return (
     <form className="mt-8 space-y-6" onSubmit={handleRegister}>
+      {error && (
+        <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+          <p className="text-red-700">{error}</p>
+        </div>
+      )}
       <div className="rounded-md shadow-sm space-y-4">
         <div>
-          <label htmlFor="full-name" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
             Full Name
           </label>
           <input
-            id="full-name"
-            name="fullName"
+            id="name"
+            name="name"
             type="text"
             required
             className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
             placeholder="John Doe"
-            value={formData.fullName}
+            value={formData.name}
             onChange={handleInputChange}
           />
         </div>

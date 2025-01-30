@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../common/LoadingSpinner';
+import { authAPI } from '../../services/api';
 
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const [showResetPassword, setShowResetPassword] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -21,12 +25,13 @@ const LoginForm = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError('');
     try {
-      // TODO: Implement login logic
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated API call
-      console.log('Login:', formData);
+      const response = await authAPI.login(formData);
+      localStorage.setItem('token', response.data.token);
+      navigate('/');
     } catch (error) {
-      console.error('Login error:', error);
+      setError(error.response?.data?.error || 'Login failed');
     } finally {
       setIsLoading(false);
     }
@@ -91,6 +96,11 @@ const LoginForm = () => {
 
   return (
     <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+      {error && (
+        <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+          <p className="text-red-700">{error}</p>
+        </div>
+      )}
       <div className="rounded-md shadow-sm -space-y-px">
         <div>
           <label htmlFor="email-address" className="sr-only">Email address</label>
