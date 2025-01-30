@@ -4,6 +4,8 @@ const cors = require('cors');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
+const mongoose = require('mongoose');
+const corsOptions = require('./config/cors');
 
 // Initialize express
 const app = express();
@@ -12,10 +14,7 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors({
-  origin: 'http://localhost:5173', // Vite's default port
-  credentials: true
-}));
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan('dev'));
 
