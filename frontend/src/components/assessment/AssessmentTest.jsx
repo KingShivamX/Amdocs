@@ -1,8 +1,12 @@
 import React, { useState } from "react"
 import QuestionCard from "./QuestionCard"
 import ProgressBar from "./ProgressBar"
+import { useAuth } from "../../context/AuthContext"
+import { useNavigate } from "react-router-dom"
 
 const AssessmentTest = () => {
+    const { setHasCompletedAssessment } = useAuth()
+    const navigate = useNavigate()
     const [currentQuestion, setCurrentQuestion] = useState(0)
     const [answers, setAnswers] = useState({})
 
@@ -49,10 +53,19 @@ const AssessmentTest = () => {
         }
     }
 
-    const handleSubmit = () => {
-        // TODO: Send answers to backend
-        console.log("Assessment answers:", answers)
-        // Navigate to dashboard or loading screen while ML processes results
+    const handleSubmit = async () => {
+        try {
+            // TODO: Send answers to backend
+            console.log("Assessment answers:", answers)
+
+            // Mark assessment as completed
+            setHasCompletedAssessment(true)
+
+            // Navigate to dashboard
+            navigate("/dashboard")
+        } catch (error) {
+            console.error("Error submitting assessment:", error)
+        }
     }
 
     return (

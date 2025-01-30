@@ -3,13 +3,12 @@ import { Routes, Route, Navigate } from "react-router-dom"
 import PrivateRoute from "./PrivateRoute"
 import AssessmentTest from "../components/assessment/AssessmentTest"
 import WelcomeScreen from "../components/welcome/WelcomeScreen"
+import { useAuth } from "../context/AuthContext"
+import DashboardPage from "../pages/dashboard/DashboardPage"
 
 // Lazy load pages
 const LoginPage = React.lazy(() => import("../pages/auth/LoginPage"))
 const RegisterPage = React.lazy(() => import("../pages/auth/RegisterPage"))
-const DashboardPage = React.lazy(() =>
-    import("../pages/dashboard/DashboardPage")
-)
 const ProfilePage = React.lazy(() => import("../pages/profile/ProfilePage"))
 
 // Loading component for suspense fallback
@@ -20,11 +19,7 @@ const Loading = () => (
 )
 
 const AppRoutes = () => {
-    // This should come from your auth context/state
-    const isLoggedIn = true // Replace with actual auth check
-
-    // This should come from your user context/state
-    const hasCompletedAssessment = false // Replace with actual check
+    const { hasCompletedAssessment } = useAuth()
 
     return (
         <Suspense fallback={<Loading />}>
@@ -39,29 +34,23 @@ const AppRoutes = () => {
                     <Route path="/profile" element={<ProfilePage />} />
                 </Route>
 
-                {/* Redirect to welcome screen if logged in but hasn't completed assessment */}
+                {/* Home route */}
                 <Route
                     path="/"
                     element={
-                        isLoggedIn ? (
-                            hasCompletedAssessment ? (
-                                <DashboardPage />
-                            ) : (
-                                <WelcomeScreen />
-                            )
+                        hasCompletedAssessment ? (
+                            <DashboardPage />
                         ) : (
-                            <Navigate to="/login" />
+                            <WelcomeScreen />
                         )
                     }
                 />
 
-                {/* Catch all - 404 */}
-                <Route
-                    path="*"
-                    element={<Navigate to="/dashboard" replace />}
-                />
-
+                {/* Assessment route */}
                 <Route path="/assessment" element={<AssessmentTest />} />
+
+                {/* Catch all - redirect to home */}
+                <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </Suspense>
     )
