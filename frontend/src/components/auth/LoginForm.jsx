@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../common/LoadingSpinner';
 import { authAPI } from '../../services/api';
 
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [pageReady, setPageReady] = useState(false);
   const [error, setError] = useState('');
   const [showResetPassword, setShowResetPassword] = useState(false);
   const navigate = useNavigate();
@@ -13,6 +14,10 @@ const LoginForm = () => {
     password: ''
   });
   const [resetEmail, setResetEmail] = useState('');
+
+  useEffect(() => {
+    setPageReady(true);
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -51,6 +56,14 @@ const LoginForm = () => {
       setIsLoading(false);
     }
   };
+
+  if (!pageReady) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="large" />
+      </div>
+    );
+  }
 
   if (showResetPassword) {
     return (
