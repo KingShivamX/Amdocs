@@ -36,7 +36,7 @@ pip install -r requirements.txt
 
 1. Create sample data:  
 ```bash
-python create_sample_data.py
+python model/create_sample_data.py
 ```
 
 2. Train the model:
