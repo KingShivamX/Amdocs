@@ -34,15 +34,21 @@ pip install -r requirements.txt
 
 ## Usage
 
-1. Train the model:
+1. Create sample data:  
+```bash
+python create_sample_data.py
+```
+
+2. Train the model:
 ```bash
 python model/train.py
 ```
 
-2. Run the Flask application:
+3. Run the Flask application:
 ```bash
 python app.py
 ```
+
 
 ## API Endpoints
 
@@ -58,7 +64,7 @@ The prediction endpoint expects JSON data in the following format:
 {
     "skills": ["python", "data_analysis"],
     "interests": ["machine_learning", "web_development"],
-    "time_commitment": 10,  // hours per week
-    "experience_level": "beginner"  // beginner, intermediate, advanced
+    "time_commitment": 10,
+    "experience_level": "beginner"
 }
 ``` 
