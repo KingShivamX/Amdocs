@@ -1,16 +1,18 @@
 import React from "react"
 import { useAuth } from "../../context/AuthContext"
+import Navigation from "../../components/common/Navigation"
 
 const DashboardPage = () => {
-    const { hasCompletedAssessment } = useAuth()
+    const { hasCompletedAssessment, user } = useAuth()
 
     return (
         <div className="min-h-screen bg-gray-100">
+            <Navigation />
             <main className="py-10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="mb-8">
                         <h1 className="text-3xl font-bold text-gray-900">
-                            Your Learning Dashboard
+                            Welcome, {user?.name}!
                         </h1>
                         {!hasCompletedAssessment && (
                             <div className="mt-4 p-4 bg-yellow-50 rounded-md">

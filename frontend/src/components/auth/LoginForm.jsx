@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../common/LoadingSpinner';
 import { authAPI } from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,6 +16,8 @@ const LoginForm = () => {
     password: ''
   });
   const [resetEmail, setResetEmail] = useState('');
+
+  const { login } = useAuth();
 
   useEffect(() => {
     setPageReady(true);
@@ -37,6 +40,7 @@ const LoginForm = () => {
     try {
       const response = await authAPI.login(formData);
       localStorage.setItem('token', response.data.token);
+      login(response.data.user);
       navigate('/');
     } catch (error) {
       setError(error.response?.data?.error || 'Login failed');

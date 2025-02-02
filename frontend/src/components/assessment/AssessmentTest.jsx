@@ -14,12 +14,35 @@ const AssessmentTest = () => {
     const questions = [
         {
             id: 1,
+            question: "What skills do you currently have?",
+            options: [
+                "Python Programming",
+                "Data Analysis & Visualization",
+                "Machine Learning",
+                "Web Development (Frontend)",
+                "Web Development (Backend)",
+                "Database Management (SQL/NoSQL)",
+                "Cloud Services (AWS/Azure/GCP)",
+                "DevOps & CI/CD",
+                "Mobile App Development",
+                "UI/UX Design",
+                "JavaScript/TypeScript",
+                "Java Development",
+                "System Architecture",
+                "API Development",
+                "Testing & QA"
+            ],
+            type: "multiple",
+            description: "Select all the skills you currently possess"
+        },
+        {
+            id: 2,
             question: "What's your experience level in programming?",
             options: ["Beginner", "Intermediate", "Advanced", "Expert"],
             type: "single",
         },
         {
-            id: 2,
+            id: 3,
             question: "Which areas interest you the most?",
             options: [
                 "Web Development",
@@ -27,15 +50,18 @@ const AssessmentTest = () => {
                 "Mobile Development",
                 "DevOps",
                 "Cybersecurity",
+                "Data Science",
+                "Cloud Computing",
+                "Blockchain"
             ],
             type: "multiple",
         },
         {
-            id: 3,
+            id: 4,
             question: "How many hours can you dedicate to learning per week?",
             options: ["0-5 hours", "5-10 hours", "10-20 hours", "20+ hours"],
             type: "single",
-        },
+        }
     ]
 
     const handleAnswer = (questionId, answer) => {
