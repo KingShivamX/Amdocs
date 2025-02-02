@@ -4,33 +4,25 @@ import { useNavigate } from "react-router-dom"
 const AuthContext = createContext(null)
 
 export const AuthProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    // Set default logged in state to true
+    const [isLoggedIn, setIsLoggedIn] = useState(true)
     const [hasCompletedAssessment, setHasCompletedAssessment] = useState(false)
-    const [user, setUser] = useState(null)
+    // Set a default user
+    const [user, setUser] = useState({
+        name: "Test User",
+        email: "test@example.com",
+        createdAt: new Date().toISOString()
+    })
     const navigate = useNavigate()
 
-    useEffect(() => {
-        // Check for stored user data on mount
-        const storedUser = localStorage.getItem('user')
-        if (storedUser) {
-            setUser(JSON.parse(storedUser))
-            setIsLoggedIn(true)
-        }
-    }, [])
+    // Remove the useEffect that checks for stored user
 
     const login = (userData) => {
-        setUser(userData)
-        setIsLoggedIn(true)
-        localStorage.setItem('user', JSON.stringify(userData))
+        // No need to implement
     }
 
     const logout = () => {
-        setUser(null)
-        setIsLoggedIn(false)
-        setHasCompletedAssessment(false)
-        localStorage.removeItem('token')
-        localStorage.removeItem('user')
-        navigate('/login')
+        // No need to implement
     }
 
     return (
