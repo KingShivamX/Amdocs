@@ -1,11 +1,10 @@
 import React, { Suspense } from "react"
-import { Routes, Route, Navigate } from "react-router-dom"
-import PrivateRoute from "./PrivateRoute"
+import { Routes, Route } from "react-router-dom"
 import AssessmentTest from "../components/assessment/AssessmentTest"
 import WelcomeScreen from "../components/welcome/WelcomeScreen"
-import { useAuth } from "../context/AuthContext"
 import DashboardPage from "../pages/dashboard/DashboardPage"
-import ProfilePage from "../pages/profile/ProfilePage"
+import RecommendedCourses from "../pages/dashboard/RecommendedCourses"
+import LearningPath from "../pages/dashboard/LearningPath"
 
 // Loading component for suspense fallback
 const Loading = () => (
@@ -15,34 +14,15 @@ const Loading = () => (
 )
 
 const AppRoutes = () => {
-    const { hasCompletedAssessment } = useAuth()
-
     return (
         <Suspense fallback={<Loading />}>
             <Routes>
-                {/* Protected Routes - now accessible without login */}
-                <Route element={<PrivateRoute />}>
-                    <Route path="/dashboard" element={<DashboardPage />} />
-                    <Route path="/profile" element={<ProfilePage />} />
-                </Route>
-
-                {/* Home route */}
-                <Route
-                    path="/"
-                    element={
-                        hasCompletedAssessment ? (
-                            <DashboardPage />
-                        ) : (
-                            <WelcomeScreen />
-                        )
-                    }
-                />
-
-                {/* Assessment route */}
+                <Route path="/" element={<WelcomeScreen />} />
                 <Route path="/assessment" element={<AssessmentTest />} />
-
-                {/* Catch all - redirect to home */}
-                <Route path="*" element={<Navigate to="/" replace />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/dashboard/courses" element={<RecommendedCourses />} />
+                <Route path="/dashboard/learning-path" element={<LearningPath />} />
+                <Route path="*" element={<WelcomeScreen />} />
             </Routes>
         </Suspense>
     )
