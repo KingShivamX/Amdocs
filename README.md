@@ -74,5 +74,5 @@ The Adaptive Learning System is an AI-driven platform that provides **personaliz
   - User progress
   - Quiz results
   - Feedback on recommendations
-
 ---
+
